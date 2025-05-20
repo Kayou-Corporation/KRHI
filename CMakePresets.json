@@ -1,0 +1,66 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "VS_2022",
+            "displayName": "Visual Studio 2022",
+            "description": "MSVC Compiler",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "cacheVariables": {
+                //"CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                //"ENGINE_UNIT_TESTS": true
+            }
+        },
+        {
+            "name": "GCC",
+            "displayName": "GCC",
+            "description": "Compilers: C=gcc, CXX=g++",
+            "generator": "Ninja Multi-Config",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc$env{gcc_compiler_v}",
+                "CMAKE_CXX_COMPILER": "g++$env{gcc_compiler_v}",
+                "ENGINE_UNIT_TESTS": true
+            }
+        }
+    ],
+
+    "buildPresets": [
+        {
+            "name": "VS_2022 Debug",
+            "description": "Visual Studio multi-config Debug preset",
+            "configurePreset": "VS_2022",
+            "configuration": "Debug",
+            "verbose": true,
+            "jobs": 8
+        },
+        {
+            "name": "VS_2022 Release",
+            "description": "Visual Studio multi-config Release preset",
+            "configurePreset": "VS_2022",
+            "configuration": "Release",
+            "verbose": true,
+            "jobs": 8
+        },
+        {
+            "name": "GCC Debug",
+            "description": "GCC debug preset",
+            "configurePreset": "GCC",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "GCC Release",
+            "description": "GCC debug preset",
+            "configurePreset": "GCC",
+            "configuration": "Release",
+            "verbose": true
+        }
+    ]
+}
+
