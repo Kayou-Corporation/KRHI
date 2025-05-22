@@ -1,7 +1,7 @@
 #---------------------------------------#
 #				SETUP					#
 #---------------------------------------#
-cmake_minimum_required(VERSION 3.30.0)
+cmake_minimum_required(VERSION 3.30.0 FATAL_ERROR)
 
 project(KRHI VERSION 1.0.0 LANGUAGES CXX)
 
@@ -15,7 +15,7 @@ add_subdirectory(Libs)
 find_package(Vulkan 1.4.304 REQUIRED)
 
 # Output directories
-set(OUTPUT_DIR_BASE "${CMAKE_SOURCE_DIR}/build/${CMAKE_CXX_COMPILER_ID}")
+set(OUTPUT_DIR_BASE "${CMAKE_SOURCE_DIR}/Builds/${CMAKE_CXX_COMPILER_ID}")
 
 message(STATUS "[${PROJECT_NAME}]: Base output directory: ${OUTPUT_DIR_BASE}")
 
@@ -28,7 +28,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_DIR_BASE}/$<CONFIG>/libs")
 #---------------------------------------#
 #				SOURCES					#
 #---------------------------------------#
-file(GLOB_RECURSE KRHI_SOURCES "Source/*.cpp")
+file(GLOB_RECURSE KRHI_SOURCES "Code/Source/*.cpp")
 
 
 
@@ -48,7 +48,7 @@ endif()
 #---------------------------------------#
 #				INCLUDE					#
 #---------------------------------------#
-target_include_directories(KRHI PUBLIC "Include/")
+target_include_directories(KRHI PUBLIC "Code/Include/")
 
 
 
@@ -88,4 +88,14 @@ set_target_properties(KRHI PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${PROJECT_VER
 #---------------------------------------#
 #               LINK LIBRARIES          #
 #---------------------------------------#
-target_link_libraries(KRHI PRIVATE glm::glm)
+target_link_libraries(KRHI PUBLIC Vulkan::Vulkan glm::glm glfw)
+
+
+
+# --------------------------------------- #
+#              ENABLE TESTING             #
+# --------------------------------------- #
+# Enable CTests
+enable_testing()
+
+add_subdirectory(Test)

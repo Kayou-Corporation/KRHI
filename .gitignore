@@ -548,3 +548,4 @@ FodyWeavers.xsd
 !Assets/Meshes/*
 
 # End of https://www.toptal.com/developers/gitignore/api/rider,jetbrains+all,visualstudio
+/TEMP/
