@@ -1,9 +1,9 @@
 #---------------------------------------#
 #				SETUP					#
 #---------------------------------------#
-project(KRHI VERSION 1.0.0 LANGUAGES CXX)
-
 cmake_minimum_required(VERSION 3.30.0)
+
+project(KRHI VERSION 1.0.0 LANGUAGES CXX)
 
 
 
@@ -33,9 +33,15 @@ file(GLOB_RECURSE KRHI_SOURCES "Source/*.cpp")
 
 
 #---------------------------------------#
-#				EXECUTABLE  			#
+#				BUILD MODE  			#
 #---------------------------------------#
-add_executable(KRHI ${KRHI_SOURCES})
+option(KRHI_BUILD_STATIC "Build static libraries" ON)
+
+if(KRHI_BUILD_STATIC)
+    add_library(KRHI STATIC ${KRHI_SOURCES})
+else()
+    add_library(KRHI SHARED ${KRHI_SOURCES})
+endif()
 
 
 
@@ -76,3 +82,10 @@ set_target_properties(KRHI PROPERTIES PREFIX "")
 
 # Set dll name
 set_target_properties(KRHI PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${PROJECT_VERSION}")
+
+
+
+#---------------------------------------#
+#               LINK LIBRARIES          #
+#---------------------------------------#
+target_link_libraries(KRHI PRIVATE glm::glm)
