@@ -8,7 +8,11 @@
 	#define KRHI_RELEASE 
 #endif
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && defined(__clang__)
+	#define INLINE inline
+	#define FORCE_INLINE inline __attribute__((always_inline))
+	#define NO_INLINE __attribute__((noinline))
+#elif defined(_MSC_VER) 
 	#define INLINE __inline
 	#define FORCE_INLINE __forceinline
 	#define NO_INLINE __declspec(noinline)

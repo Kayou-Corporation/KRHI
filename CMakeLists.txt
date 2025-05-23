@@ -49,6 +49,7 @@ option(KRHI_DEBUG_DEFINE "Enable debug mode" OFF)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(KRHI_DEBUG_DEFINE ON CACHE BOOL "Enable debug mode" FORCE)
+    target_compile_definitions(KRHI PUBLIC KRHI_DEBUG_DEFINE)
 endif()
 
 message(STATUS "DEBUG is ${KRHI_DEBUG_DEFINE}")
