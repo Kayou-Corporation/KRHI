@@ -45,13 +45,13 @@ else()
 endif()
 
 
-option(KRHI_DEBUG "Enable debug mode" OFF)
+option(KRHI_DEBUG_DEFINE "Enable debug mode" OFF)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(KRHI_DEBUG ON CACHE BOOL "Enable debug mode" FORCE)
+    set(KRHI_DEBUG_DEFINE ON CACHE BOOL "Enable debug mode" FORCE)
 endif()
 
-message(STATUS "DEBUG is ${KRHI_DEBUG}")
+message(STATUS "DEBUG is ${KRHI_DEBUG_DEFINE}")
 
 
 #---------------------------------------#

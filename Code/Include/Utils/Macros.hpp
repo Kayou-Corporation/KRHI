@@ -1,21 +1,23 @@
 #pragma once
 
-#define KRHI_DEBUG
-
-//#if defined(_DEBUG) || defined(DEBUG) || defined(__DEBUG__) || defined(__DEBUG) || defined(-DDEBUG)
-//	#ifndef KRHI_DEBUG
-//		#define KRHI_DEBUG
-//	#endif
-//#else 
-//	#define KRHI_RELEASE 
-//#endif
-
-#if defined(_WIN32) || defined(_WIN64)
-	#ifndef KRHI_INLINE
-		#define KRHI_INLINE __forceinline
+#if defined(KRHI_DEBUG_DEFINE)
+	#ifndef KRHI_DEBUG
+		#define KRHI_DEBUG
 	#endif
+#else 
+	#define KRHI_RELEASE 
+#endif
+
+#if defined(_MSC_VER)
+	#define INLINE __inline
+	#define FORCE_INLINE __forceinline
+	#define NO_INLINE __declspec(noinline)
+#elif defined(__GNUC__) || defined(__clang__)
+	#define INLINE inline
+	#define FORCE_INLINE inline __attribute__((always_inline))
+	#define NO_INLINE __attribute__((noinline))
 #else
-	#ifndef KRHI_INLINE
-		#define KRHI_INLINE inline
-	#endif
+	#define INLINE inline
+	#define FORCE_INLINE inline
+	#define NO_INLINE
 #endif

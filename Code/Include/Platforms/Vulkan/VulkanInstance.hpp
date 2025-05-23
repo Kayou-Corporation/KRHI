@@ -5,7 +5,6 @@
 #include <vulkan/Vulkan.hpp>
 
 #include "Common/Instance.hpp"
-#include "Utils/Macros.hpp"
 
 namespace KRHI::Vulkan
 {
@@ -18,7 +17,7 @@ namespace KRHI::Vulkan
 		KRHI_API void Create(std::vector<const char*> extensions, const std::string& appName, const Common::Version& appVersion, const std::string& engineName, const Common::Version& engineVersion) override;
 		KRHI_API void Destroy() override;
 
-		KRHI_API KRHI_INLINE std::vector<const char*>& GetExtensions() override { return m_extensions; }
+		KRHI_API FORCE_INLINE std::vector<const char*>& GetExtensions() override { return m_extensions; }
 
 	private:
 		VkInstance m_handle = nullptr;
