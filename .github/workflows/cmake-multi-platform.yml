@@ -57,7 +57,7 @@ jobs:
         sudo apt install -y \
         cmake \
         ninja-build \
-        xkbcommon \
+        libxkbcommon-dev \
         wayland-protocols \
         wayland-scanner++ \
         libwayland-dev \
