@@ -166,8 +166,6 @@
             },
             "binaryDir": "${sourceDir}/TEMP/${presetName}",
             "cacheVariables": {
-                //"CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                //"ENGINE_UNIT_TESTS": true
             }
         },
         {

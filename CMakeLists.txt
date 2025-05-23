@@ -37,9 +37,6 @@ file(GLOB_RECURSE KRHI_SOURCES "Code/Source/*.cpp")
 #---------------------------------------#
 option(KRHI_BUILD_STATIC "Build static libraries" ON)
 
-set(DEBUG_ENABLE ON CACHE BOOL "enable debugging")
-target_compile_definitions(KRHI PRIVATE DEBUG_ENABLE=${DEBUG_ENABLE})
-
 if(KRHI_BUILD_STATIC)
     add_library(KRHI STATIC ${KRHI_SOURCES})
     target_compile_definitions(KRHI PUBLIC KRHI_BUILD_STATIC)
@@ -47,6 +44,14 @@ else()
     add_library(KRHI SHARED ${KRHI_SOURCES})
 endif()
 
+
+option(KRHI_DEBUG "Enable debug mode" OFF)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(KRHI_DEBUG ON CACHE BOOL "Enable debug mode" FORCE)
+endif()
+
+message(STATUS "DEBUG is ${KRHI_DEBUG}")
 
 
 #---------------------------------------#
