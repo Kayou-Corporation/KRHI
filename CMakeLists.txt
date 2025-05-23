@@ -1,7 +1,7 @@
 #---------------------------------------#
 #				SETUP					#
 #---------------------------------------#
-cmake_minimum_required(VERSION 3.30.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.29.5 FATAL_ERROR)
 
 project(KRHI VERSION 1.0.0 LANGUAGES CXX)
 
@@ -37,8 +37,12 @@ file(GLOB_RECURSE KRHI_SOURCES "Code/Source/*.cpp")
 #---------------------------------------#
 option(KRHI_BUILD_STATIC "Build static libraries" ON)
 
+set(DEBUG_ENABLE ON CACHE BOOL "enable debugging")
+target_compile_definitions(KRHI PRIVATE DEBUG_ENABLE=${DEBUG_ENABLE})
+
 if(KRHI_BUILD_STATIC)
     add_library(KRHI STATIC ${KRHI_SOURCES})
+    target_compile_definitions(KRHI PUBLIC KRHI_BUILD_STATIC)
 else()
     add_library(KRHI SHARED ${KRHI_SOURCES})
 endif()
