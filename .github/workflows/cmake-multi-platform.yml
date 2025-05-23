@@ -51,6 +51,7 @@ jobs:
         submodules: recursive
 
     - name: Install dependencies
+      if: runner.os == 'Linux'
       run: |
         sudo apt update
         sudo apt install -y cmake wayland-protocols libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
