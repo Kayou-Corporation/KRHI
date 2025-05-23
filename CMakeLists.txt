@@ -69,7 +69,7 @@ target_compile_features(KRHI PUBLIC cxx_std_20)
 
 if(MSVC)
     set(CMAKE_DEBUG_POSTFIX "d")
-    target_compile_options(KRHI PUBLIC /W3 /WX)
+    target_compile_options(KRHI PUBLIC /W4 /WX)
 else()
     target_compile_options(KRHI PUBLIC -Wall -Wextra -Wpedantic -Werror)
 endif()
