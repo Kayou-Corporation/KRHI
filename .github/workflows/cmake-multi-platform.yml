@@ -1,83 +1,72 @@
-name: Generic Build
-'on':
-  workflow_dispatch: {}
-  push: {}
+name: CI KRHI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
-  build:
+  build-linux:
+    name: Build on Ubuntu (${{ matrix.compiler }})
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+
+    env:
+      BUILD_DIR: build
+
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: '0'
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.15
-      with:
-        versionSpec: 5.x
-    - id: determine_version
-      name: Determine Version
-      uses: gittools/actions/gitversion/execute@v0.9.15
-      with:
-        additionalArguments: /overrideconfig mode=Mainline
-    - name: Install Octopus Deploy CLI
-      uses: OctopusDeploy/install-octopus-cli-action@v1
-      with:
-        version: latest
-    - name: Package
-      run: |-
-        octo pack \
-         --id KRHI \
-         --version ${{ steps.determine_version.outputs.semVer }} \
-         --format zip \
-         --overwrite \
-         --include '**/*'
-      shell: bash
-    - name: Tag Release
-      uses: mathieudutour/github-tag-action@v6.1
-      with:
-        custom_tag: ${{ steps.determine_version.outputs.semVer }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-    - id: create_release
-      name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ steps.determine_version.outputs.semVer }}+run${{ github.run_number }}-attempt${{ github.run_attempt }}
-        release_name: Release ${{ steps.determine_version.outputs.semVer }} Run ${{ github.run_number }} Attempt ${{ github.run_attempt }}
-        draft: ${{ github.ref == 'refs/heads/master' && 'false' || 'true' }}
-        name: ${{ github.ref == 'refs/heads/master' && 'false' || 'true' }}
-    - name: Upload Release Asset
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ steps.determine_version.outputs.semVer }}+run${{ github.run_number }}-attempt${{ github.run_attempt }}
-        files: KRHI.${{ steps.determine_version.outputs.semVer }}.zip
-    - name: Push packages to Octopus Deploy
-      uses: OctopusDeploy/push-package-action@v3
-      env:
-        OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_TOKEN }}
-        OCTOPUS_URL: ${{ secrets.OCTOPUS_SERVER_URL }}
-        OCTOPUS_SPACE: ${{ secrets.OCTOPUS_SPACE }}
-      with:
-        packages: KRHI.${{ steps.determine_version.outputs.semVer }}.zip
-        overwrite_mode: OverwriteExisting
-    - name: Generate Octopus Deploy build information
-      uses: OctopusDeploy/push-build-information-action@v3
-      env:
-        OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_TOKEN }}
-        OCTOPUS_URL: ${{ secrets.OCTOPUS_SERVER_URL }}
-        OCTOPUS_SPACE: ${{ secrets.OCTOPUS_SPACE }}
-      with:
-        version: ${{ steps.determine_version.outputs.semVer }}
-        packages: KRHI
-        overwrite_mode: OverwriteExisting
-    - name: Create Octopus Release
-      uses: OctopusDeploy/create-release-action@v3
-      env:
-        OCTOPUS_API_KEY: ${{ secrets.OCTOPUS_API_TOKEN }}
-        OCTOPUS_URL: ${{ secrets.OCTOPUS_SERVER_URL }}
-        OCTOPUS_SPACE: ${{ secrets.OCTOPUS_SPACE }}
-      with:
-        project: KRHI
-        packages: KRHI:${{ steps.determine_version.outputs.semVer }}
-permissions:
-  id-token: write
-  checks: write
-  contents: write
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y cmake ninja-build g++ clang
+
+      - name: Set compiler
+        run: |
+          if [ "${{ matrix.compiler }}" == "gcc" ]; then
+            export CC=gcc
+            export CXX=g++
+          else
+            export CC=clang
+            export CXX=clang++
+          fi
+          echo "CC=$CC" >> $GITHUB_ENV
+          echo "CXX=$CXX" >> $GITHUB_ENV
+
+      - name: Configure project
+        run: |
+          cmake -S . -B $BUILD_DIR -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build project
+        run: cmake --build $BUILD_DIR
+
+      - name: Run tests
+        run: ctest --test-dir $BUILD_DIR --output-on-failure
+
+  build-windows:
+    name: Build on Windows (MSVC)
+    runs-on: windows-latest
+
+    env:
+      BUILD_DIR: build
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure project (MSVC)
+        run: cmake -S . -B %BUILD_DIR% -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build project (MSVC)
+        run: cmake --build %BUILD_DIR% --config Release
+
+      - name: Run tests
+        run: ctest --test-dir %BUILD_DIR% --output-on-failure --build-config Release
