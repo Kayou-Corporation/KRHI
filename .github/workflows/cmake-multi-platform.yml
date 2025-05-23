@@ -54,7 +54,18 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt update
-        sudo apt install -y cmake wayland-protocols libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+        sudo apt install -y \
+        cmake \
+        ninja-build \
+        wayland-protocols \
+        wayland-scanner++ \
+        wayland-scanner \
+        libwayland-dev \
+        libx11-dev \
+        libxrandr-dev \
+        libxinerama-dev \
+        libxcursor-dev \
+        libxi-dev
 
     - name: Install Vulkan SDK
       uses: humbletim/install-vulkan-sdk@v1.2
