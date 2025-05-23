@@ -1,0 +1,72 @@
+name: CI KRHI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-linux:
+    name: Build on Ubuntu (${{ matrix.compiler }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+
+    env:
+      BUILD_DIR: build
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y cmake ninja-build g++ clang
+
+      - name: Set compiler
+        run: |
+          if [ "${{ matrix.compiler }}" == "gcc" ]; then
+            export CC=gcc
+            export CXX=g++
+          else
+            export CC=clang
+            export CXX=clang++
+          fi
+          echo "CC=$CC" >> $GITHUB_ENV
+          echo "CXX=$CXX" >> $GITHUB_ENV
+
+      - name: Configure project
+        run: |
+          cmake -S . -B $BUILD_DIR -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build project
+        run: cmake --build $BUILD_DIR
+
+      - name: Run tests
+        run: ctest --test-dir $BUILD_DIR --output-on-failure
+
+  build-windows:
+    name: Build on Windows (MSVC)
+    runs-on: windows-latest
+
+    env:
+      BUILD_DIR: build
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure project (MSVC)
+        run: cmake -S . -B %BUILD_DIR% -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build project (MSVC)
+        run: cmake --build %BUILD_DIR% --config Release
+
+      - name: Run tests
+        run: ctest --test-dir %BUILD_DIR% --output-on-failure --build-config Release
