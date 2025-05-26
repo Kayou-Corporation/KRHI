@@ -25,6 +25,6 @@ namespace KRHI::Common
 		KRHI_API virtual ~APIInterface() = default;
 
 		KRHI_API virtual Ref<Instance> InstantiateInstance() = 0;
-		KRHI_API virtual void DestroyInstance(Ref<Instance> instance) = 0;
+		KRHI_API virtual void DestroyInstance(Ref<Instance> instance) { instance.reset(); }
 	};
 }

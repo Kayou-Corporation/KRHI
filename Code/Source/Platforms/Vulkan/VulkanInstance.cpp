@@ -17,6 +17,14 @@ namespace KRHI::Vulkan
 		extensions.clear();
 	}
 
+	void VulkanInstance::Destroy()
+	{
+#ifdef KRHI_DEBUG
+		m_handle.destroyDebugUtilsMessengerEXT(m_debugMessenger, nullptr, m_dispatchLoader);
+#endif
+		m_handle.destroy();
+	}
+
 	void VulkanInstance::CreateInstance(std::vector<const char*> extensions, const std::vector<const char*>& vulkanLayers, const std::string& appName, const Common::Version& appVersion, const std::string& engineName, const Common::Version& engineVersion)
 	{
 		vk::ApplicationInfo appInfo{};
@@ -36,11 +44,7 @@ namespace KRHI::Vulkan
 		{
 			extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 		}
-#endif
-		createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
-		createInfo.ppEnabledExtensionNames = extensions.data();
 
-#ifdef KRHI_DEBUG
 		createInfo.enabledLayerCount = static_cast<uint32_t>(vulkanLayers.size());
 		createInfo.ppEnabledLayerNames = vulkanLayers.data();
 #else
@@ -48,25 +52,36 @@ namespace KRHI::Vulkan
 		createInfo.ppEnabledLayerNames = {};
 #endif
 
-		m_handle = vk::createInstanceUnique(createInfo);
+		createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+		createInfo.ppEnabledExtensionNames = extensions.data();
+
+		m_handle = vk::createInstance(createInfo);
+
+#ifdef KRHI_DEBUG
+		vk::detail::DynamicLoader dl;
+		PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr =
+			dl.getProcAddress<PFN_vkGetInstanceProcAddr>("vkGetInstanceProcAddr");
+
+		m_dispatchLoader.init(m_handle, vkGetInstanceProcAddr);
+#endif
 	}
 
 #ifdef KRHI_DEBUG
 	void VulkanInstance::CreateDebugMessenger()
 	{
 		vk::DebugUtilsMessengerCreateInfoEXT createInfo{};
-		createInfo.messageSeverity = vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo    |
-									 vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
-									 vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
-									 vk::DebugUtilsMessageSeverityFlagBitsEXT::eError;
+		createInfo.messageSeverity = vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
+			vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
+			vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
+			vk::DebugUtilsMessageSeverityFlagBitsEXT::eError;
 
-		createInfo.messageType = vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral    |
-								 vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
-								 vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance;
+		createInfo.messageType = vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
+			vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
+			vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance;
 
 		createInfo.pfnUserCallback = DebugCallback;
 
-		m_debugMessenger =  m_handle->createDebugUtilsMessengerEXTUnique(createInfo);
+		m_debugMessenger = m_handle.createDebugUtilsMessengerEXT(createInfo, nullptr, m_dispatchLoader);
 	}
 
 	// TODO (Ethan / Corentin) : Change to use Logger instead when it's ready
