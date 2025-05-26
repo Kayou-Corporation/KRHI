@@ -1,5 +1,13 @@
 #pragma once
 
+/**
+ * @file Macros.hpp
+ * @brief Provide few macros, both in windows and linux
+ */
+
+ /**
+  * @brief Macros to know the type of compilation
+  */
 #if defined(KRHI_DEBUG_DEFINE)
 	#ifndef KRHI_DEBUG
 		#define KRHI_DEBUG
@@ -8,6 +16,9 @@
 	#define KRHI_RELEASE 
 #endif
 
+/**
+ * @brief Macro to define inline and it's variant depending on the platform
+ */
 #if defined(_MSC_VER) && defined(__clang__)
 	#define INLINE inline
 	#define FORCE_INLINE inline __attribute__((always_inline))

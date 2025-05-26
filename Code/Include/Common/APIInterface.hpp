@@ -12,6 +12,15 @@ namespace KRHI::Vulkan
 
 namespace KRHI::Common
 {
+	/**
+	* @file APIInterface.hpp
+	* @brief Common implementation of API instancing and all required class
+	*/
+
+	/**
+	* @enum BackendAPI
+	* @brief Enum to describe all API implementation available
+	*/
 	enum class BackendAPI : uint8_t
 	{
 		NONE = 0,

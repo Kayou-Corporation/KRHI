@@ -1,6 +1,10 @@
 #pragma once
 
-// Case : Platforms : Window / Linux, Build : shared or static
+
+/**
+ * @file Export.hpp
+ * @brief Provide macro to export the library, can be export in shared, static and in both windows and linux
+ */
 
 #if defined(_WIN32) || defined(_WIN64)
 	#if defined(KRHI_STATIC_DEFINE)
