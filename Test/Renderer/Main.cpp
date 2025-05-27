@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Platforms/Vulkan/VulkanInterface.hpp"
+#include "Common/Window.hpp"
 
 
 using namespace KRHI;
