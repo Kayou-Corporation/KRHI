@@ -27,7 +27,7 @@ int main()
 
     window->Create(1920, 1080, "KRHI");
 
-    instance->Create({extensions, { Common::ValidationLayers::VALIDATION, Common::ValidationLayers::DEBUG, Common::ValidationLayers::MONITOR }, "KRHI", { 0,0,1 }, "KRHI", { 0,0,1 } });
+    instance->Create({ extensions, { Common::ValidationLayers::VALIDATION,Common::ValidationLayers::DEBUG, Common::ValidationLayers::MONITOR }, "KRHI", { 0,0,1 }, "KRHI", { 0,0,1 } });
     const vk::Instance vkInst = instance->Cast<Vulkan::VulkanInstance>()->GetHandle();
     static_cast<void>(vkInst);
     window->CreateSurface(instance, surface);
