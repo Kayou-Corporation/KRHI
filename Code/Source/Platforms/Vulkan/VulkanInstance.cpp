@@ -142,6 +142,9 @@ namespace KRHI::Vulkan
 			case Common::ValidationLayers::MONITOR:
 				layers.push_back("VK_LAYER_LUNARG_monitor");
 				break;
+			case Common::ValidationLayers::DUMP:
+				layers.push_back("VK_LAYER_LUNARG_api_dump");
+				break;
 			case Common::ValidationLayers::SIMULATION:
 				layers.push_back("VK_LAYER_LUNARG_device_simulation");
 				break;
