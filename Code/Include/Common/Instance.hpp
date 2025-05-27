@@ -19,9 +19,9 @@ namespace KRHI::Common
 	*/
 	struct Version
 	{
-		int major; /// Major Version
-		int minor; /// Minor Version
-		int patch; /// Patch Version
+		int major;
+		int minor;
+		int patch;
 	};
 
 	/**

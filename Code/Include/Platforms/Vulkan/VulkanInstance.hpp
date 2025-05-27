@@ -14,7 +14,7 @@ namespace KRHI::Vulkan
     */
 
     /**
-    * @file VulkanInstance
+    * @class VulkanInstance
     * @brief Vulkan override of common instance class, responsible for holding the instance & the debug system
     */
     class VulkanInstance : public Common::Instance
@@ -41,7 +41,8 @@ namespace KRHI::Vulkan
         /**
         * @brief Vulkan function of get the vk::Instance
         */
-        KRHI_API FORCE_INLINE vk::Instance GetHandle() { return m_handle; }
+        KRHI_API FORCE_INLINE const vk::Instance& GetHandle() const { return m_handle; }
+        KRHI_API FORCE_INLINE const vk::detail::DispatchLoaderDynamic& GetDynamicLoader() const { return m_dispatchLoader; }
 
     private:
         /**
@@ -61,6 +62,7 @@ namespace KRHI::Vulkan
 
         /**
         * @brief Intern function, to translate the abstract layers into vulkan layers
+        * @param abstractLayers list of abstract layers to be translate into vulkan
         */
         /// Validation => VK_LAYER_KHRONOS_validation
         /// Monitor => VK_LAYER_LUNARG_monitor
@@ -68,15 +70,16 @@ namespace KRHI::Vulkan
         /// Debug => VK_LAYER_LUNARG_gfxreconstruct
         std::vector<const char*> GetLayers(const std::vector<Common::ValidationLayers>& abstractLayers);
 
+        /**
+        * @brief Vulkan dispatch system, only available in debug mod
+        */
+        vk::detail::DispatchLoaderDynamic m_dispatchLoader;
+
 #ifdef KRHI_DEBUG
         /**
         * @brief Vulkan debug system, only available in debug mod
         */
         vk::DebugUtilsMessengerEXT m_debugMessenger;
-        /**
-        * @brief Vulkan dispatch system, only available in debug mod
-        */
-        vk::detail::DispatchLoaderDynamic m_dispatchLoader;
 
         /**
         * @brief Intern function, to create the the debugger

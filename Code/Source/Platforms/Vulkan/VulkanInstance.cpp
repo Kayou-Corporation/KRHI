@@ -57,13 +57,11 @@ namespace KRHI::Vulkan
 
 		m_handle = vk::createInstance(createInfo);
 
-#ifdef KRHI_DEBUG
 		vk::detail::DynamicLoader dl;
 		PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr =
 			dl.getProcAddress<PFN_vkGetInstanceProcAddr>("vkGetInstanceProcAddr");
 
 		m_dispatchLoader.init(m_handle, vkGetInstanceProcAddr);
-#endif
 	}
 
 #ifdef KRHI_DEBUG
