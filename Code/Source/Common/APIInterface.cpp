@@ -5,9 +5,14 @@ namespace KRHI::Common
 {
 	Ref<APIInterface> APIInterface::InitAPI(BackendAPI api)
 	{ 
-		if (api == Common::BackendAPI::VULKAN)
+		switch (api)
 		{
+		case Common::BackendAPI::VULKAN:
 			return CreateRef<Vulkan::VulkanInterface>();
+			break;
+		
+		default:
+			break;
 		}
 		return nullptr; 
 	}
