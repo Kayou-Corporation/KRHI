@@ -20,7 +20,7 @@ namespace KRHI::Vulkan
 	public:
 		KRHI_API void Create(Ref<Common::Instance> instance, Ref<Common::Surface> surface) override;
 		KRHI_API void Destroy() override;
-		KRHI_API QueueFamilyIndices GetQueueFamilies() const;
+		KRHI_API QueueFamilyIndices GetQueueFamilies(Ref<Common::Surface> surface) const;
 
 
 	private:

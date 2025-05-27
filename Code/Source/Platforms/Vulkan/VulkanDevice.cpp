@@ -1,6 +1,8 @@
 #include "Platforms/Vulkan/VulkanDevice.hpp"
 
+#include "Common/Surface.hpp"
 #include "Platforms/Vulkan/VulkanInstance.hpp"
+#include "Platforms/Vulkan/VulkanSurface.hpp"
 
 namespace KRHI::Vulkan
 {
@@ -19,7 +21,7 @@ namespace KRHI::Vulkan
 
 	std::ostream operator<<(const std::ostream& lhs, const vk::QueueFlags& rhs);
 
-	VulkanDevice::QueueFamilyIndices VulkanDevice::GetQueueFamilies() const
+	VulkanDevice::QueueFamilyIndices VulkanDevice::GetQueueFamilies(Ref<Common::Surface> surface) const
 	{
 		QueueFamilyIndices queueFamilyIndices = {};
 
@@ -42,9 +44,8 @@ namespace KRHI::Vulkan
 			if (queueFamily.queueFlags & vk::QueueFlagBits::eGraphics)
 				queueFamilyIndices.graphicsFamily = i;
 
-			const vk::Bool32 presentSupport = false;
-			vk::Result result = m_physicalHandle.getSurfaceSupportKHR(i, surface);
-			std::cout << "Queue family " << i << " supports surface: " << (result ? "Yes" : "No") << "\n";
+			const vk::Bool32 presentSupport = m_physicalHandle.getSurfaceSupportKHR(i, surface->Cast<VulkanSurface>()->GetHandle());
+			std::cout << "Queue family " << i << " supports surface: " << presentSupport  << "\n";
 
 			if (presentSupport)
 				queueFamilyIndices.presentFamily = i;

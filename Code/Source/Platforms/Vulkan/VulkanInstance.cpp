@@ -26,6 +26,8 @@ namespace KRHI::Vulkan
 
 	void VulkanInstance::CreateInstance(std::vector<const char*> extensions, const std::vector<const char*>& vulkanLayers, const std::string& appName, const Common::Version& appVersion, const std::string& engineName, const Common::Version& engineVersion)
 	{
+		static_cast<void>(vulkanLayers);
+
 		vk::ApplicationInfo appInfo{};
 		appInfo.pApplicationName = appName.c_str();
 		appInfo.applicationVersion = VK_MAKE_VERSION(appVersion.major, appVersion.minor, appVersion.patch);
