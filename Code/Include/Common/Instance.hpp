@@ -19,9 +19,9 @@ namespace KRHI::Common
 	*/
 	struct Version
 	{
-		int major; /// Major Version
-		int minor; /// Minor Version
-		int patch; /// Patch Version
+		int major;
+		int minor;
+		int patch;
 	};
 
 	/**
@@ -47,7 +47,7 @@ namespace KRHI::Common
 		KRHI_API virtual ~Instance() = default;
 
 		/**
-		* @brief Abstact version of the destroy function of the class
+		* @brief Abstact version of the create function of the class
 		* @param extensions The extensions provide by the surface (GLFW | SDL | etc...)
 		* @param layers The abstact layers provide by the user, will the override into the API implementation of the class (Vulkan, DX12)
 		* @param appName The application name
