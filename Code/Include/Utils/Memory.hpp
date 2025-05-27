@@ -55,6 +55,7 @@ template<typename T>
 class RefCast : std::enable_shared_from_this<T>
 {
 public:
+    virtual ~RefCast() = default;
     /**
     * @tparam T Type of object to cast to
     */
