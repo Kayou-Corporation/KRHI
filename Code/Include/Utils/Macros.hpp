@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common/APIInterface.hpp"
+
 /**
  * @file Macros.hpp
  * @brief Provide few macros, both in windows and linux

@@ -2,19 +2,18 @@
 
 namespace KRHI::Vulkan
 {
-	void VulkanInstance::Create(std::vector<const char*> extensions, const std::vector<Common::ValidationLayers>& layers, const std::string& appName, const Common::Version& appVersion, const std::string& engineName, const Common::Version& engineVersion)
+	void VulkanInstance::Create(const Common::InstanceSpec& spec)
 	{
-		std::vector<const char*> vulkanLayers = GetLayers(layers);
-		CreateInstance(extensions, vulkanLayers, appName, appVersion, engineName, engineVersion);
+		std::vector<const char*> vulkanLayers = GetLayers(spec.layers);
+		CreateInstance(spec.extensions, vulkanLayers, spec.appName, spec.appVersion, spec.engineName, spec.engineVersion);
 
 #ifdef KRHI_DEBUG
 		CreateDebugMessenger();
 #endif
 
-		m_extensions = extensions;
+		m_extensions = spec.extensions;
 
 		vulkanLayers.clear();
-		extensions.clear();
 	}
 
 	void VulkanInstance::Destroy()
@@ -135,16 +134,16 @@ namespace KRHI::Vulkan
 		{
 			switch (layer)
 			{
-			case Common::ValidationLayers::Validation:
+			case Common::ValidationLayers::VALIDATION:
 				layers.push_back("VK_LAYER_KHRONOS_validation");
 				break;
-			case Common::ValidationLayers::Monitor:
+			case Common::ValidationLayers::MONITOR:
 				layers.push_back("VK_LAYER_LUNARG_monitor");
 				break;
-			case Common::ValidationLayers::Simulation:
+			case Common::ValidationLayers::SIMULATION:
 				layers.push_back("VK_LAYER_LUNARG_device_simulation");
 				break;
-			case Common::ValidationLayers::Debug:
+			case Common::ValidationLayers::DEBUG:
 				layers.push_back("VK_LAYER_LUNARG_gfxreconstruct");
 				break;
 			default:

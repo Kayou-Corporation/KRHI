@@ -30,11 +30,31 @@ namespace KRHI::Common
 	*/
 	enum class ValidationLayers : int
 	{
-		Validation = 0, /// Most basic layer, regroup all of the checks
-		Monitor = 1, /// Check all API call
-		Dump = 2, /// Generate a .txt file with every API call 
-		Simulation = 3, /// Enable the possibility to simulate certain extensions not natively supoorted by the GPU
-		Debug = 4 /// Enable the possibility to capture all of the API call
+		VALIDATION = 0, /// Most basic layer, regroup all of the checks
+		MONITOR = 1, /// Check all API call
+		DUMP = 2, /// Generate a .txt file with every API call 
+		SIMULATION = 3, /// Enable the possibility to simulate certain extensions not natively supoorted by the GPU
+		DEBUG = 4 /// Enable the possibility to capture all of the API call
+	};
+
+	/**
+	* @class InstanceSpec
+	* @brief structure to hold all instance creation specification
+	* @param extensions The extensions provide by the surface (GLFW | SDL | etc...)
+	* @param layers The abstact layers provide by the user, will the override into the API implementation of the class (Vulkan, DX12)
+	* @param appName The application name
+	* @param appVersion The application version
+	* @param engineName The engine name
+	* @param engineVersion The engine version
+	*/
+	struct InstanceSpec
+	{
+		std::vector<const char*> extensions;
+		std::vector<Common::ValidationLayers> layers; 
+		std::string appName; 
+		Version appVersion;
+		std::string engineName; 
+		Version engineVersion;
 	};
 
 	/**
@@ -48,14 +68,8 @@ namespace KRHI::Common
 
 		/**
 		* @brief Abstact version of the create function of the class
-		* @param extensions The extensions provide by the surface (GLFW | SDL | etc...)
-		* @param layers The abstact layers provide by the user, will the override into the API implementation of the class (Vulkan, DX12)
-		* @param appName The application name
-		* @param appVersion The application version
-		* @param engineName The engine name
-		* @param engineVersion The engine version
 		*/
-		KRHI_API virtual void Create(std::vector<const char*> extensions, const std::vector<Common::ValidationLayers>& layers, const std::string& appName, const Version& appVersion, const std::string& engineName, const Version& engineVersion) = 0;
+		KRHI_API virtual void Create(const InstanceSpec& spec) = 0;
 
 		/**
 		* @brief Abstact version of the destroy function of the class

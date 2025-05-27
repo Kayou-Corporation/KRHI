@@ -1,17 +1,12 @@
 #pragma once
 
-#include "Common/Instance.hpp"
 
 #include "Utils/Export.hpp"
 #include "Utils/Memory.hpp"
 
-namespace KRHI::Vulkan
-{
-	class VulkanInterface;
-}
-
 namespace KRHI::Common
 {
+	class Instance;
 	/**
 	* @file APIInterface.hpp
 	* @brief Common implementation of API instancing and all required class

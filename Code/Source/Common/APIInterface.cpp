@@ -7,7 +7,7 @@ namespace KRHI::Common
 	{ 
 		switch (api)
 		{
-		case Common::BackendAPI::VULKAN:
+		case BackendAPI::VULKAN:
 			return CreateRef<Vulkan::VulkanInterface>();
 			break;
 		

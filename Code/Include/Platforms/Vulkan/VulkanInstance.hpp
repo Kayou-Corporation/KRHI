@@ -26,7 +26,7 @@ namespace KRHI::Vulkan
         /**
         * @brief Vulkan override of common function to create the instance class & the debugger, check the common implementation to have details about the parameters
         */
-        KRHI_API void Create(std::vector<const char*> extensions, const std::vector<Common::ValidationLayers>& layers, const std::string& appName, const Common::Version& appVersion, const std::string& engineName, const Common::Version& engineVersion) override;
+        KRHI_API void Create(const Common::InstanceSpec& spec) override;
 
         /**
         * @brief Vulkan override of common function to destroy the instance & the debugger
@@ -48,7 +48,7 @@ namespace KRHI::Vulkan
         /**
         * @brief Vulkan instance
         */
-        vk::Instance m_handle;
+        vk::Instance m_handle = nullptr;
 
         /**
         * @brief Intern function, to create the vk::Instance
@@ -79,7 +79,7 @@ namespace KRHI::Vulkan
         /**
         * @brief Vulkan debug system, only available in debug mod
         */
-        vk::DebugUtilsMessengerEXT m_debugMessenger;
+        vk::DebugUtilsMessengerEXT m_debugMessenger = nullptr;
 
         /**
         * @brief Intern function, to create the the debugger
