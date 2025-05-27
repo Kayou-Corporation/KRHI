@@ -30,6 +30,6 @@ namespace KRHI::Common
 		 * @brief Pure virtual method to destroy the surface.
 		 * @param instance Abstract instance created from the desired graphics api's instance.
 		 */
-		KRHI_API virtual void Destroy(Instance* instance) = 0;
+		KRHI_API virtual void Destroy(Ref<Instance> instance) = 0;
 	};
 }

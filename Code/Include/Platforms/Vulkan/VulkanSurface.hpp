@@ -32,7 +32,7 @@ namespace KRHI::Vulkan
 		 *
 		 * This method should be called to clean up the Vulkan surface resources.
 		 */
-		KRHI_API void Destroy(Common::Instance* instance) override;
+		KRHI_API void Destroy(Ref<Common::Instance> instance) override;
 
 		/**
 		 * @brief Gets the raw Vulkan surface handle.

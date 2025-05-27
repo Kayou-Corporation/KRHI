@@ -45,24 +45,16 @@ constexpr Scope<T> CreateScope(Args&& ... args)
 }
 
 /**
-* @brief A template class to make easier smart pointer cast
-* @tparam T Type of object
-*/
-template<typename T>
-/**
 * @class RefCast
 */
-class RefCast : std::enable_shared_from_this<T>
+template<typename T>
+class RefCast : public std::enable_shared_from_this<T>
 {
 public:
-    /**
-    * @tparam T Type of object to cast to
-    */
+    virtual ~RefCast() = default;
+
     template<typename U>
-    /**
-    * @brief Cast the object to the desired type
-    */
-    Ref<U> Cast() 
+    Ref<U> Cast()
     {
         return std::dynamic_pointer_cast<U>(this->shared_from_this());
     }
