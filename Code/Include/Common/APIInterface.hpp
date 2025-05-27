@@ -12,6 +12,8 @@ namespace KRHI::Common
 	* @brief Common implementation of API instancing and all required class
 	*/
 
+	class Surface;
+
 	/**
 	* @enum BackendAPI
 	* @brief Enum to describe all API implementation available
@@ -36,9 +38,14 @@ namespace KRHI::Common
 		KRHI_API virtual ~APIInterface() = default;
 
 		/**
-		* @brief Abstract function to instanciate the instance (VulkanInstance, etc..)
+		* @brief Abstract function to instantiate the instance (VulkanInstance, etc..)
 		*/
 		KRHI_API virtual Ref<Instance> InstantiateInstance() = 0;
+
+		/**
+		* @brief Abstract function to instantiate the surface (VulkanSurface, etc..)
+		*/
+		KRHI_API virtual Ref<Surface> InstantiateSurface() = 0;
 
 		/**
 		* @brief Abstract function to destroy the instance (VulkanInstance, etc..)

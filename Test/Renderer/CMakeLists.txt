@@ -17,7 +17,7 @@ project(Renderer
 #            BUILD MODE                 #
 #---------------------------------------#
 
-add_executable(KRHI_TEST_RENDERER "Main.cpp")
+add_executable(KRHI_TEST_RENDERER "Main.cpp" "GLWindow.cpp")
 
 
 
