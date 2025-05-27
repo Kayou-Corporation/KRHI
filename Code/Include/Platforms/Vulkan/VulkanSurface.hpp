@@ -24,6 +24,9 @@ namespace KRHI::Vulkan
 	class VulkanSurface : public Common::Surface
 	{
 	public:
+		/**
+		 * @brief Default overriding destructor.
+		 */
 		KRHI_API ~VulkanSurface() override = default;
 
 		/**
@@ -38,7 +41,7 @@ namespace KRHI::Vulkan
 		 * @brief Gets the raw Vulkan surface handle.
 		 * @return Reference to the VkSurfaceKHR handle.
 		 */
-		KRHI_API vk::SurfaceKHR& GetVkSurfaceKHR() { return m_surface; }
+		KRHI_API vk::SurfaceKHR& GetHandle() { return m_handle; }
 
 		/**
 		 * @brief Retrieves the surface capabilities supported by the GPU.
@@ -58,8 +61,10 @@ namespace KRHI::Vulkan
 		 */
 		KRHI_API std::vector<vk::PresentModeKHR> GetSurfacePresentModes() const { return m_presentModes; }
 
+		KRHI_API void SetHandle(const vk::SurfaceKHR& newHandle) { m_handle = newHandle; }
+
 	private:
-		vk::SurfaceKHR m_surface = nullptr;                         ///< The Vulkan surface handle.
+		vk::SurfaceKHR m_handle = nullptr;                         ///< The Vulkan surface handle.
 		vk::SurfaceCapabilitiesKHR m_capabilities{};                ///< Surface capabilities (e.g., min/max image count, extent, etc.).
 		std::vector<vk::SurfaceFormatKHR> m_formats{};              ///< Supported surface formats.
 		std::vector<vk::PresentModeKHR> m_presentModes{};           ///< Supported presentation modes.

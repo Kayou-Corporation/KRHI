@@ -8,6 +8,6 @@ namespace KRHI::Vulkan
 	void VulkanSurface::Destroy(Ref<Common::Instance> instance)
 	{
 		const vk::Instance vkInstance = instance->Cast<VulkanInstance>()->GetHandle();
-		vkInstance.destroySurfaceKHR(m_surface, nullptr);
+		vkInstance.destroySurfaceKHR(m_handle, nullptr);
 	}
 }

@@ -39,6 +39,8 @@ int main()
 
     extensions.clear();
 
+    surface->Destroy(instance);
+
     instance->Destroy();
 
     window->Destroy();

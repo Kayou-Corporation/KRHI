@@ -2,6 +2,7 @@
 
 #include "GLWindow.hpp"
 
+#include "GLFW/glfw3.h"
 #include "Platforms/Vulkan/VulkanInstance.hpp"
 #include "Platforms/Vulkan/VulkanSurface.hpp"
 
@@ -28,8 +29,9 @@ namespace KRHI::Examples
 
 	void GLWindow::CreateSurface(Ref<Common::Instance> instance, Ref<Common::Surface> surface)
 	{
-		VkSurfaceKHR vkSurface = surface->Cast<Vulkan::VulkanSurface>()->GetVkSurfaceKHR();
+		VkSurfaceKHR vkSurface;
 		glfwCreateWindowSurface(instance->Cast<Vulkan::VulkanInstance>()->GetHandle(), m_window, nullptr, &vkSurface);
+		surface->Cast<Vulkan::VulkanSurface>()->SetHandle(vkSurface);
 	}
 
 	bool GLWindow::ShouldClose()
