@@ -1,11 +1,16 @@
+#include "Common/Surface.hpp"
+
 #include "Platforms/Vulkan/VulkanDevice.hpp"
 
-#include "Common/Surface.hpp"
+#include <set>
+
 #include "Platforms/Vulkan/VulkanInstance.hpp"
-#include "Platforms/Vulkan/VulkanSurface.hpp"
+
 
 namespace KRHI::Vulkan
 {
+	std::ostream operator<<(const std::ostream& lhs, const vk::QueueFlags& rhs);
+
 	void VulkanDevice::Create(const Ref<Common::Instance> instance, const Ref<Common::Surface> surface)
 	{
 		static_cast<void>(instance);
@@ -19,16 +24,23 @@ namespace KRHI::Vulkan
 	}
 
 
-	std::ostream operator<<(const std::ostream& lhs, const vk::QueueFlags& rhs);
 
-	VulkanDevice::QueueFamilyIndices VulkanDevice::GetQueueFamilies(Ref<Common::Surface> surface) const
+	bool VulkanDevice::CheckDeviceExtensionSupport() const
+	{
+		std::vector<vk::ExtensionProperties> extensions = m_physicalHandle.enumerateDeviceExtensionProperties();
+		std::set<std::string> requiredExtensions(extensions.begin(), extensions.end());
+
+		for (const vk::ExtensionProperties& extension : extensions)
+			requiredExtensions.erase(extension.extensionName);
+
+		return requiredExtensions.empty();
+	}
+
+
+	VulkanDevice::QueueFamilyIndices VulkanDevice::FindQueueFamilies(const vk::SurfaceKHR& surface) const
 	{
 		QueueFamilyIndices queueFamilyIndices = {};
-
-		uint32_t queueFamilyCount = 0;
-		m_physicalHandle.getQueueFamilyProperties(&queueFamilyCount, nullptr);
-
-		std::vector<vk::QueueFamilyProperties> queueFamilyProperties = m_physicalHandle.getQueueFamilyProperties();
+		const std::vector<vk::QueueFamilyProperties> queueFamilyProperties = m_physicalHandle.getQueueFamilyProperties();
 
 		std::cout << "Queue Family size: " << queueFamilyProperties.size() << std::endl;
 		for (size_t i = 0; i < queueFamilyProperties.size(); ++i)
@@ -44,7 +56,7 @@ namespace KRHI::Vulkan
 			if (queueFamily.queueFlags & vk::QueueFlagBits::eGraphics)
 				queueFamilyIndices.graphicsFamily = i;
 
-			const vk::Bool32 presentSupport = m_physicalHandle.getSurfaceSupportKHR(i, surface->Cast<VulkanSurface>()->GetHandle());
+			const vk::Bool32 presentSupport = m_physicalHandle.getSurfaceSupportKHR(i, surface);
 			std::cout << "Queue family " << i << " supports surface: " << presentSupport  << "\n";
 
 			if (presentSupport)
@@ -59,12 +71,36 @@ namespace KRHI::Vulkan
 	}
 
 
-	void VulkanDevice::CreatePhysicalDevice(const vk::Instance& instance, const vk::SurfaceCapabilitiesKHR& surface)
+	void VulkanDevice::SelectPhysicalDevice(const vk::Instance& instance)
 	{
-		static_cast<void>(instance);
-		static_cast<void>(surface);
-		//uint32_t physicalDevicesCount = 0;
-		//std::vector<VkPhysicalDevice> physicalDevies;
-		//instance.enumeratePhysicalDevices(physicalDevicesCount, physicalDevies.data());
+		const std::vector<vk::PhysicalDevice> physicalDevices = instance.enumeratePhysicalDevices();
+
+		// TODO : Replace with logger
+		if (physicalDevices.empty())
+			throw std::runtime_error("No physical devices found");
+
+		// Todo : Check if device is Suitable using IsDeviceSuitable
+		for (const vk::PhysicalDevice& device : physicalDevices)
+		{
+			m_physicalHandle = device;
+		}
+
+		// Todo : Replace with logger
+		if (m_physicalHandle == nullptr)
+			throw std::runtime_error("No physical devices found");
+	}
+
+
+	bool VulkanDevice::IsDeviceSuitable(const vk::SurfaceKHR& surface) const
+	{
+		QueueFamilyIndices queueFamilyIndices = FindQueueFamilies(surface);
+		bool extensionsSupported = CheckDeviceExtensionSupport();
+		bool isSwapchainAdequate = false;
+
+		if (extensionsSupported)
+		{
+		}
+
+		return false;
 	}
 }

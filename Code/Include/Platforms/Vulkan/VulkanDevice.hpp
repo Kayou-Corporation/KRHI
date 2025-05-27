@@ -22,14 +22,17 @@ namespace KRHI::Vulkan
 	public:
 		KRHI_API void Create(Ref<Common::Instance> instance, Ref<Common::Surface> surface) override;
 		KRHI_API void Destroy() override;
-		KRHI_API QueueFamilyIndices GetQueueFamilies(Ref<Common::Surface> surface) const;
 
 
 	private:
+		void SelectPhysicalDevice(const vk::Instance& instance);
+		void CreateLogicalDevice();
+		bool IsDeviceSuitable(const vk::PhysicalDevice& physicalDevice) const;
+		bool CheckDeviceExtensionSupport() const;
+		QueueFamilyIndices FindQueueFamilies(const vk::SurfaceKHR& surface) const;
+
 		vk::Device m_handle = nullptr;
 
 		vk::PhysicalDevice m_physicalHandle = nullptr;
-		void CreatePhysicalDevice(const vk::Instance& instance, const vk::SurfaceCapabilitiesKHR& surface);
-
 	};
 }

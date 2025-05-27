@@ -32,6 +32,8 @@ int main()
     static_cast<void>(vkInst);
     window->CreateSurface(instance, surface);
 
+
+
     while (!window->ShouldClose())
     {
         window->PollEvents();
