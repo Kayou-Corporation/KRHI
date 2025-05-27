@@ -24,6 +24,8 @@ namespace KRHI::Vulkan
 	class VulkanSurface : public Common::Surface
 	{
 	public:
+		KRHI_API ~VulkanSurface() override = default;
+
 		/**
 		 * @brief Destroys the Vulkan surface.
 		 * @param instance Pointer to the abstract Vulkan instance that owns the surface.
@@ -36,30 +38,30 @@ namespace KRHI::Vulkan
 		 * @brief Gets the raw Vulkan surface handle.
 		 * @return Reference to the VkSurfaceKHR handle.
 		 */
-		KRHI_API VkSurfaceKHR& GetVkSurfaceKHR() { return m_surface; }
+		KRHI_API vk::SurfaceKHR& GetVkSurfaceKHR() { return m_surface; }
 
 		/**
 		 * @brief Retrieves the surface capabilities supported by the GPU.
 		 * @return A VkSurfaceCapabilitiesKHR structure with the surface's properties.
 		 */
-		KRHI_API VkSurfaceCapabilitiesKHR GetSurfaceCapabilities() const { return m_capabilities; }
+		KRHI_API vk::SurfaceCapabilitiesKHR GetSurfaceCapabilities() const { return m_capabilities; }
 
 		/**
 		 * @brief Gets the supported surface formats.
 		 * @return A vector of VkSurfaceFormatKHR representing the available formats.
 		 */
-		KRHI_API std::vector<VkSurfaceFormatKHR> GetSurfaceFormats() const { return m_formats; }
+		KRHI_API std::vector<vk::SurfaceFormatKHR> GetSurfaceFormats() const { return m_formats; }
 
 		/**
 		 * @brief Gets the supported presentation modes.
 		 * @return A vector of VkPresentModeKHR representing available presentation modes.
 		 */
-		KRHI_API std::vector<VkPresentModeKHR> GetSurfacePresentModes() const { return m_presentModes; }
+		KRHI_API std::vector<vk::PresentModeKHR> GetSurfacePresentModes() const { return m_presentModes; }
 
 	private:
-		VkSurfaceKHR m_surface = nullptr;                         ///< The Vulkan surface handle.
-		VkSurfaceCapabilitiesKHR m_capabilities{};                ///< Surface capabilities (e.g., min/max image count, extent, etc.).
-		std::vector<VkSurfaceFormatKHR> m_formats{};              ///< Supported surface formats.
-		std::vector<VkPresentModeKHR> m_presentModes{};           ///< Supported presentation modes.
+		vk::SurfaceKHR m_surface = nullptr;                         ///< The Vulkan surface handle.
+		vk::SurfaceCapabilitiesKHR m_capabilities{};                ///< Surface capabilities (e.g., min/max image count, extent, etc.).
+		std::vector<vk::SurfaceFormatKHR> m_formats{};              ///< Supported surface formats.
+		std::vector<vk::PresentModeKHR> m_presentModes{};           ///< Supported presentation modes.
 	};
 }

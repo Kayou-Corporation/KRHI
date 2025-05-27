@@ -45,6 +45,14 @@ namespace KRHI::Common
 		 * @param instance Abstract instance. The user needs to cast it depending on the graphics api they are using.
 		 * @param surface Abstract surface that will also need to be cast.
 		 */
-		KRHI_API virtual void CreateSurface(Instance* instance, Surface* surface) = 0;
+		KRHI_API virtual void CreateSurface(Ref<Instance> instance, Ref<Surface> surface) = 0;
+
+		/**
+		 * @brief Gets wether the window should close or not.
+		 * @return Bool : true means window should close, false means it shouldn't.
+		 */
+		KRHI_API virtual bool ShouldClose() = 0;
+
+		KRHI_API virtual void PollEvents() = 0;
 	};
 }

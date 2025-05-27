@@ -1,6 +1,9 @@
+#pragma once
+
 #include "Common/APIInterface.hpp"
 
 #include "Platforms/Vulkan/VulkanInstance.hpp"
+#include "Platforms/Vulkan/VulkanSurface.hpp"
 
 namespace KRHI::Vulkan
 {
@@ -22,5 +25,10 @@ namespace KRHI::Vulkan
 		* @brief Vulkan derived function of APIInterface to instanciate instance (VulkanInstance)
 		*/
 		KRHI_API Ref<Common::Instance> InstantiateInstance() override { return CreateRef<VulkanInstance>(); }
+
+		/**
+		* @brief Vulkan derived function of APIInterface to instanciate instance (VulkanInstance)
+		*/
+		KRHI_API Ref<Common::Surface> InstantiateSurface() override { return CreateRef<VulkanSurface>(); }
 	};
 }
