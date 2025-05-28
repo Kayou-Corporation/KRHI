@@ -17,6 +17,7 @@ namespace KRHI::Examples
 		KRHI_API void CreateSurface(Ref<Common::Instance> instance, Ref<Common::Surface> surface) override;
 		KRHI_API bool ShouldClose() override;
 		KRHI_API void PollEvents() override;
+		KRHI_API const char** GetInstanceExtensions(uint32_t& extensionsCount) override;
 
 	private:
 		int m_width = 0;

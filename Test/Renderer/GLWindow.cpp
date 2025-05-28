@@ -43,4 +43,10 @@ namespace KRHI::Examples
 	{
 		glfwPollEvents();
 	}
+
+	const char** GLWindow::GetInstanceExtensions(uint32_t& extensionsCount)
+	{
+		const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&extensionsCount);
+		return glfwExtensions;
+	}
 }

@@ -17,7 +17,7 @@ namespace KRHI::Vulkan
 	}
 
 
-	std::ostream operator<<(const std::ostream& lhs, const vk::QueueFlags& rhs);
+	/*std::ostream operator<<(const std::ostream& lhs, const vk::QueueFlags& rhs);
 
 	VulkanDevice::QueueFamilyIndices VulkanDevice::GetQueueFamilies() const
 	{
@@ -55,7 +55,7 @@ namespace KRHI::Vulkan
 			++i;
 		}
 		return queueFamilyIndices;
-	}
+	}*/
 
 
 	void VulkanDevice::CreatePhysicalDevice(const vk::Instance& instance, const vk::SurfaceCapabilitiesKHR& surface)

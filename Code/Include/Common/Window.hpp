@@ -53,6 +53,16 @@ namespace KRHI::Common
 		 */
 		KRHI_API virtual bool ShouldClose() = 0;
 
+		/**
+		 * @brief Processes all pending events.
+		 */
 		KRHI_API virtual void PollEvents() = 0;
+
+		/**
+		 * @brief Gets the extensions for the instance.
+		 * @param extensionsCount Unsigned int that the user creates on their side to know the number of available extensions.
+		 * @return The array containing the extensions.
+		 */
+		KRHI_API virtual const char** GetInstanceExtensions(uint32_t& extensionsCount) = 0;
 	};
 }
