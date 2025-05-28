@@ -20,12 +20,11 @@ int main()
 
     Ref<Common::Window> window = CreateRef<Examples::GLWindow>();
 
-    glfwInit();
+    window->Create(1920, 1080, "KRHI");
+
     uint32_t extensionsCount = 0;
     const char** rawExtensions = window->GetInstanceExtensions(extensionsCount);
     std::vector<const char*> extensions(rawExtensions, rawExtensions + extensionsCount);
-
-    window->Create(1920, 1080, "KRHI");
 
     instance->Create({ extensions, {Common::ValidationLayers::VALIDATION,Common::ValidationLayers::DEBUG, Common::ValidationLayers::MONITOR}, "KRHI", { 0,0,1 }, "KRHI", { 0,0,1 } });
     const vk::Instance vkInst = instance->Cast<Vulkan::VulkanInstance>()->GetHandle();
